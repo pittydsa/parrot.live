@@ -6,8 +6,17 @@ const colors = require('colors/safe');
 const frames = [];
 
 // Setup frames in memory
-fs.readdir('./frames').then(data => { 
+fs.readdir('./frames').then(data => {
+  data.sort((a, b) => {
+    a = parseInt(a.split(".")[0], 10);
+    b = parseInt(b.split(".")[0], 10);
+    if (a > b) return 1;
+    if (b > a) return -1;
+    return 0;
+  });
+
   data.forEach(async frame => {
+    console.log(`reading ./frames/${frame}`)
     const f = await fs.readFile(`./frames/${frame}`);
     frames.push(f.toString());
   })
